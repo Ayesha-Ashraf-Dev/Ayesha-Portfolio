@@ -11,7 +11,6 @@ const Portfolio = () => {
       description: 'A modern automotive marketplace built to connect buyers, sellers, and dealerships through a seamless digital experience.',
       categoryName: 'Full Stack Development',
       image: '/1.png',
-      // gallery: 'portfolio-gallery-web',
       views: 565,
       date: 'May 30, 2025',
       projectUrl: 'https://arudeal.com' 
@@ -23,10 +22,9 @@ const Portfolio = () => {
       description: 'A full-stack Human Resource Management System designed to streamline employee operations, including attendance tracking, payroll processing, leave management, and organizational reporting through a centralized admin dashboard.',
       categoryName: 'Enterprise Saas Solution',
       image: '/2.png',
-      // gallery: 'portfolio-gallery-graphics',
       views: 432,
       date: 'Feb 28, 2019',
-      projectUrl: 'https://hrms-client-liard.vercel.app/login' // Add actual project URL
+      projectUrl: 'https://hrms-client-liard.vercel.app/login'
     },
     {
       id: 3,
@@ -35,7 +33,6 @@ const Portfolio = () => {
       description: 'A decentralized network platform designed to connect individuals and nodes for seamless data sharing and collaboration.',
       categoryName: 'Web Platform Design & Development',
       image: '/1h1n.png',
-      // gallery: 'portfolio-gallery-motion',
       views: 789,
       date: 'Mar 5, 2019',
       projectUrl: 'https://1h1n.com'
@@ -47,7 +44,6 @@ const Portfolio = () => {
       description: 'A modern privacy-first cloud platform leveraging zero-knowledge architecture, decentralized infrastructure, and end-to-end encryption to ensure secure, GDPR-compliant data processing and storage.',
       categoryName: 'Branding',
       image: '/4.png',
-      gallery: 'portfolio-gallery-brand',
       views: 321,
       date: 'Feb 15, 2019',
       projectUrl: 'https://zkdataclouds.com'
@@ -59,7 +55,6 @@ const Portfolio = () => {
       description: 'A business landing page designed to provide a quick and effective online presence for businesses, featuring modern design elements and responsive layout.',
       categoryName: 'Web Design & Development',
       image: '/quick-web.png',
-      gallery: 'portfolio-gallery-web',
       views: 654,
       date: 'Mar 1, 2019',
       projectUrl: 'https://quick-start-web-clone.vercel.app/'
@@ -71,7 +66,6 @@ const Portfolio = () => {
       description: 'A personal portfolio website showcasing projects, skills, and experience in a visually appealing and user-friendly manner.',
       categoryName: 'Web Design & Development',
       image: '/portfolio-web.png',
-      gallery: 'portfolio-gallery-graphics',
       views: 543,
       date: 'Feb 20, 2019',
       projectUrl: 'https://mulan-rafiki-web-clone.vercel.app/'
@@ -89,10 +83,9 @@ const Portfolio = () => {
     ? portfolioItems 
     : portfolioItems.filter(item => item.category === activeFilter);
 
-  // Handle project navigation to external URL
-  const handleProjectClick = (url) => {
-    window.open(url, '_blank'); // Opens in new tab
-    // OR use: window.location.href = url; // Opens in same tab
+  // Handle project navigation to external URL - FIXED with proper type annotation
+  const handleProjectClick = (url: string) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -111,9 +104,6 @@ const Portfolio = () => {
             <div className="w-8 h-1 bg-[#0f2943]/30 rounded-full mx-1.5"></div>
             <div className="w-20 h-1 bg-[#e87532] rounded-full"></div>
           </div>
-          {/* <p className="text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
-            Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur vel illum qui dolorem
-          </p> */}
         </div>
 
         <div className="max-w-6xl mx-auto" data-aos="fade-up" data-aos-delay="100">
@@ -136,7 +126,7 @@ const Portfolio = () => {
 
           {/* Blog Grid - Exact Template Design */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map((item, index) => (
+            {filteredItems.map((item) => (
               <div 
                 key={item.id}
                 className="blog-col bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden cursor-pointer group"
@@ -180,7 +170,6 @@ const Portfolio = () => {
                   
                   {/* Article Meta */}
                   <div className="article-meta flex items-center gap-2 mt-2 mb-3 text-sm">
-                  
                     <div className="tricks bg-[#e87532]/10 text-[#e87532] text-xs font-semibold px-3 py-1 rounded-full">
                       {item.categoryName}
                     </div>

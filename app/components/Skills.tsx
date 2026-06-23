@@ -86,7 +86,7 @@ const Skills = () => {
       <div className="absolute -top-32 -right-32 w-96 h-96 bg-[#e87532]/5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-[#0f2943]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="container max-w-6xl mx-auto px-4 relative z-10">
+      <div className="container !max-w-6xl mx-auto px-4 relative z-10">
         {/* Section Title */}
         <div className="text-center mb-14" data-aos="fade-up">
           <span className="inline-block text-[#e87532] font-semibold text-sm uppercase tracking-[0.2em] mb-2 border border-[#e87532]/20 px-4 py-1.5 rounded-full">

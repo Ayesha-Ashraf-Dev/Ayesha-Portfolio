@@ -63,7 +63,7 @@ const Footer = () => {
       {/* Top decorative line */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#e87532] to-transparent"></div>
 
-      <div className="container max-w-6xl mx-auto px-4 relative z-10">
+      <div className="container !max-w-6xl mx-auto px-4 relative z-10">
         {/* Main Footer Content */}
         <div className="py-16 md:py-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">

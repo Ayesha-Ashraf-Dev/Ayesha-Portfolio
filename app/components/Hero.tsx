@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
   return (
-    <section id="hero" className="hero section bg-white py-20 md:py-28 overflow-hidden">
+    <section id="hero" className="hero max-w-6xl mx-auto section bg-white py-20 md:py-28 overflow-hidden">
       <div className="container max-w-6xl mx-auto px-4" data-aos="fade-up" data-aos-delay="100">
         <div className="row flex flex-col lg:flex-row items-center gap-12 content">
           <div className="col-lg-6 w-full lg:w-1/2" data-aos="fade-up" data-aos-delay="200">

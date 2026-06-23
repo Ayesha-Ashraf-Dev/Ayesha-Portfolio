@@ -8,91 +8,7 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 const Testimonials = () => {
   const swiperRef = useRef<HTMLDivElement>(null);
   const swiperInstance = useRef<Swiper | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(false); // Initialize with false for SSR
   const [expandedQuotes, setExpandedQuotes] = useState<{ [key: number]: boolean }>({});
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 1024);
-    };
-
-    // Set initial value after mount
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    // Only initialize Swiper on mobile/tablet and after mount
-    if (!isMounted) return;
-    
-    if (!isDesktop && swiperRef.current) {
-      swiperInstance.current = new Swiper(swiperRef.current, {
-        modules: [Navigation, Pagination, Autoplay],
-        loop: true,
-        speed: 800,
-        effect: 'slide',
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        },
-        slidesPerView: 1,
-        spaceBetween: 20,
-        navigation: {
-          nextEl: '.custom-swiper-button-next',
-          prevEl: '.custom-swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-        watchOverflow: true,
-        grabCursor: true,
-        autoHeight: false,
-        on: {
-          slideChange: () => {
-            if (swiperInstance.current) {
-              setActiveIndex(swiperInstance.current.realIndex);
-            }
-          },
-        },
-      });
-
-      if (swiperInstance.current) {
-        swiperInstance.current.update();
-        if (swiperInstance.current.autoplay) {
-          swiperInstance.current.autoplay.start();
-        }
-      }
-
-      const handleResize = () => {
-        if (swiperInstance.current) {
-          swiperInstance.current.update();
-        }
-      };
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        if (swiperInstance.current) {
-          swiperInstance.current.destroy(true, true);
-          swiperInstance.current = null;
-        }
-      };
-    }
-  }, [isDesktop, isMounted]);
-
-  const toggleReadMore = (id: number) => {
-    setExpandedQuotes(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
-  };
 
   const testimonials = [
     {
@@ -124,16 +40,66 @@ const Testimonials = () => {
     }
   ];
 
+  useEffect(() => {
+    // Initialize Swiper only on client side
+    if (typeof window === 'undefined') return;
+
+    const timer = setTimeout(() => {
+      if (swiperRef.current && !swiperInstance.current) {
+        swiperInstance.current = new Swiper(swiperRef.current, {
+          modules: [Navigation, Pagination, Autoplay],
+          loop: true,
+          speed: 800,
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          },
+          slidesPerView: 1,
+          spaceBetween: 20,
+          navigation: {
+            nextEl: '.custom-swiper-button-next',
+            prevEl: '.custom-swiper-button-prev',
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          watchOverflow: true,
+          grabCursor: true,
+          autoHeight: false,
+        });
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      if (swiperInstance.current) {
+        swiperInstance.current.destroy(true, true);
+        swiperInstance.current = null;
+      }
+    };
+  }, []);
+
+  const toggleReadMore = (id: number) => {
+    setExpandedQuotes(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+
   const truncateText = (text: string, maxLength: number = 120) => {
     if (text.length <= maxLength) return text;
     return text.slice(0, maxLength) + '...';
   };
 
-  const renderTestimonialCard = (testimonial: typeof testimonials[0], index: number) => {
+  // FIXED: This function now always returns JSX
+  const renderTestimonialCard = (testimonial: typeof testimonials[0]) => {
     const isExpanded = expandedQuotes[testimonial.id] || false;
     const shouldTruncate = testimonial.quote.length > 120;
     const displayText = isExpanded ? testimonial.quote : truncateText(testimonial.quote, 120);
 
+    // Always return JSX
     return (
       <div 
         key={testimonial.id} 
@@ -230,28 +196,38 @@ const Testimonials = () => {
     );
   };
 
-  const renderDesktopLayout = () => {
-    return (
-      <div className="hidden lg:block">
-        <div className="grid grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            renderTestimonialCard(testimonial, index)
-          ))}
+  return (
+    <section id="testimonials" className="py-16 md:py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50">
+      <div className="container !max-w-6xl !mx-auto px-4">
+        {/* Section Header */}
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-3 mb-4">
+            <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
+            <span className="text-[#e87532] font-semibold text-xs uppercase tracking-[0.3em]">
+              Testimonials
+            </span>
+            <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
+          </div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f2943] mb-3 tracking-tight">
+            What People <span className="text-[#e87532]">Say</span>
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
+            Real feedback from clients and collaborators who have experienced our work
+          </p>
         </div>
-      </div>
-    );
-  };
 
-  const renderMobileLayout = () => {
-    return (
-      <div className="lg:hidden w-full overflow-hidden">
-        {/* Wrapper with padding to prevent shadow clipping */}
-        <div className="px-1 md:px-2">
+        {/* Desktop Grid */}
+        <div className="hidden lg:grid grid-cols-3 gap-6">
+          {testimonials.map((testimonial) => renderTestimonialCard(testimonial))}
+        </div>
+
+        {/* Mobile Slider */}
+        <div className="lg:hidden w-full">
           <div className="testimonial-slider swiper w-full" ref={swiperRef}>
             <div className="swiper-wrapper">
-              {testimonials.map((testimonial, index) => (
+              {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="swiper-slide h-auto">
-                  {renderTestimonialCard(testimonial, index)}
+                  {renderTestimonialCard(testimonial)}
                 </div>
               ))}
             </div>
@@ -275,78 +251,8 @@ const Testimonials = () => {
           </div>
         </div>
       </div>
-    );
-  };
-
-  // Don't render anything during SSR to avoid hydration mismatches
-  if (!isMounted) {
-    return (
-      <section id="testimonials" className="py-16 md:py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-x-hidden">
-        <div className="container max-w-7xl mx-auto px-4 overflow-visible">
-          <div className="text-center mb-12 md:mb-16">
-            <div className="inline-flex items-center gap-3 mb-4">
-              <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
-              <span className="text-[#e87532] font-semibold text-xs uppercase tracking-[0.3em]">
-                Testimonials
-              </span>
-              <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f2943] mb-3 tracking-tight">
-              What People <span className="text-[#e87532]">Say</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
-              Real feedback from clients and collaborators who have experienced our work
-            </p>
-          </div>
-          {/* Placeholder for SSR */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="bg-white rounded-2xl shadow-lg p-6 md:p-8 min-h-[280px]">
-                <div className="animate-pulse bg-gray-200 h-16 w-16 rounded-full mb-4"></div>
-                <div className="animate-pulse bg-gray-200 h-6 w-3/4 mb-2"></div>
-                <div className="animate-pulse bg-gray-200 h-4 w-1/2 mb-4"></div>
-                <div className="animate-pulse bg-gray-200 h-4 w-full mb-2"></div>
-                <div className="animate-pulse bg-gray-200 h-4 w-full mb-2"></div>
-                <div className="animate-pulse bg-gray-200 h-4 w-2/3"></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  return (
-    <section id="testimonials" className="py-16 md:py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 overflow-x-hidden">
-      <div className="container max-w-7xl mx-auto px-4 overflow-visible">
-        {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
-            <span className="text-[#e87532] font-semibold text-xs uppercase tracking-[0.3em]">
-              Testimonials
-            </span>
-            <div className="w-10 h-0.5 bg-[#e87532] rounded-full"></div>
-          </div>
-          
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#0f2943] mb-3 tracking-tight">
-            What People <span className="text-[#e87532]">Say</span>
-          </h2>
-          
-          <p className="text-gray-600 max-w-2xl mx-auto text-sm md:text-base px-4">
-            Real feedback from clients and collaborators who have experienced our work
-          </p>
-        </div>
-
-        {/* Testimonials */}
-        <div data-aos="fade-up" data-aos-delay="100" className="overflow-visible">
-          {renderDesktopLayout()}
-          {renderMobileLayout()}
-        </div>
-      </div>
 
       <style>{`
-        /* Mobile/Tablet Swiper Styles */
         .testimonial-slider {
           width: 100% !important;
           max-width: 100% !important;
@@ -375,7 +281,6 @@ const Testimonials = () => {
           max-width: 100% !important;
         }
         
-        /* Pagination */
         .swiper-pagination {
           position: relative !important;
           display: flex !important;
@@ -402,7 +307,6 @@ const Testimonials = () => {
           opacity: 1 !important;
         }
         
-        /* Navigation */
         .custom-swiper-button-prev,
         .custom-swiper-button-next {
           position: relative !important;
@@ -426,18 +330,15 @@ const Testimonials = () => {
           display: none !important;
         }
 
-        /* Fix for container not clipping shadows */
         .container {
           max-width: 100%;
           overflow: visible !important;
         }
 
-        /* Prevent horizontal scroll */
         section {
           overflow-x: hidden !important;
         }
 
-        /* Ensure cards don't overflow on small screens */
         @media (max-width: 1023px) {
           .lg\\:grid {
             display: none !important;

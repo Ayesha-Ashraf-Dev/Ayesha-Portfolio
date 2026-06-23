@@ -15,14 +15,21 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 500);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Debug: Log when component mounts
+  useEffect(() => {
+    console.log("Home mounted, isMounted:", isMounted);
+  }, [isMounted]);
 
   return (
     <div data-theme="light" className="relative">

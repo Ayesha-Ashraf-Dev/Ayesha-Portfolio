@@ -2,12 +2,12 @@ import React from 'react';
 
 const About: React.FC = () => {
     return (
-        <section id="about" className="about section py-20 bg-gray-50 relative overflow-hidden">
+        <section id="about" className="about section w-full py-20 bg-gray-50 relative overflow-hidden">
             {/* Subtle background decoration */}
             <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#e87532]/5 rounded-full blur-3xl pointer-events-none"></div>
             <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-[#0f2943]/5 rounded-full blur-3xl pointer-events-none"></div>
 
-            <div className="container max-w-6xl mx-auto px-4 relative z-10">
+            <div className="container !max-w-6xl mx-auto px-4 relative z-10">
                 {/* Section Title */}
                 <div className="text-center mb-16" data-aos="fade-up">
                     <span className="inline-block text-[#e87532] font-semibold text-sm uppercase tracking-[0.2em] mb-2 border border-[#e87532]/20 px-4 py-1.5 rounded-full">

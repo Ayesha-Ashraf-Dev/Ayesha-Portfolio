@@ -35,12 +35,6 @@ const Footer = () => {
       icon: faUpwork,
       label: 'Upwork',
       href: 'https://www.upwork.com/freelancers/ayeshaashraf' 
-    },
-    { 
-      id: 'freelancer', 
-      icon: faFreeCodeCamp,
-      label: 'Freelancer',
-      href: 'https://www.freelancer.com/u/ayeshaashraf' 
     }
   ];
 

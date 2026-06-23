@@ -1,0 +1,45 @@
+@import "tailwindcss";
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+:root {
+    /* Navigation Colors */
+    --nav-color: #0a0f14;
+    --nav-hover-color: #e87532;
+    --nav-mobile-background-color: #ffffff;
+    --nav-dropdown-background-color: #ffffff;
+    --nav-dropdown-color: #0a0f14;
+    --nav-dropdown-hover-color: #e87532;
+    
+    /* Theme Colors */
+    --background-color: #ffffff;
+    --default-color: #0a0f14;
+    --heading-color: #0f2943;
+    --accent-color: #e87532;
+    --surface-color: #ffffff;
+    --contrast-color: #ffffff;
+    
+    /* Fonts */
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Questrial", sans-serif;
+    --nav-font: "Noto Sans", sans-serif;
+}
+
+@keyframes morphShape {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+.animate-morph-shape {
+  animation: morphShape 15s linear infinite;
+}
+
+.animate-morph-shape-reverse {
+  animation: morphShape 20s linear infinite reverse;
+}
